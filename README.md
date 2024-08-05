@@ -36,6 +36,59 @@ graph LR
   end
 ```
 
+
+```mermaid
+graph TB
+    User((User))
+    Admin((Admin))
+    
+    subgraph "Stack Auth System"
+        Dashboard[Dashboard<br/>Next.js Application]
+        Backend[Backend Service<br/>Next.js API]
+        Database[(PostgreSQL Database)]
+        EmailService[Email Service<br/>Inbucket]
+        WebhookService[Webhook Service<br/>Svix]
+        
+        subgraph "Shared Packages"
+            StackUI[Stack UI<br/>React Components]
+            StackShared[Stack Shared<br/>Utilities]
+            StackEmails[Stack Emails<br/>Email Templates]
+        end
+    end
+    
+    ExternalOAuth[External OAuth Providers]
+    
+    User --> Dashboard
+    Admin --> Dashboard
+    Dashboard --> Backend
+    Dashboard -.-> |"(To be removed)"| Database
+    Dashboard -.-> |"(To be removed)"| EmailService
+    Backend --> Database
+    Backend --> EmailService
+    Backend --> WebhookService
+    Backend --> ExternalOAuth
+    
+    Dashboard --> StackUI
+    Dashboard --> StackShared
+    Dashboard --> StackEmails
+    Backend --> StackShared
+    Backend --> StackEmails
+    
+    subgraph "External Services"
+        Svix[Svix]
+        WebhookService --> Svix
+    end
+    
+    classDef container fill:#1168bd,stroke:#0b4884,color:#ffffff
+    classDef database fill:#2b78e4,stroke:#1a4d91,color:#ffffff
+    classDef external fill:#999999,stroke:#666666,color:#ffffff
+    classDef deprecated stroke-dasharray: 5 5
+    
+    class Dashboard,Backend,EmailService,WebhookService container
+    class Database database
+    class ExternalOAuth,Svix external
+```
+
 ### Tech Stack 🥞
 
 The app is built using:
